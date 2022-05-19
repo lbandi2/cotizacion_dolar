@@ -1,14 +1,19 @@
 from bs4 import BeautifulSoup
 import requests
-from secrets import json_secret
 import pygsheets
 from datetime import datetime
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+SPREADSHEET = os.getenv('SPREADSHEET')
 
 class Price:
     def __init__(self, url):
         self.url = url
         self.service_file = 'service.json'
-        self.google_spreadsheet = json_secret('spreadsheet')
+        self.google_spreadsheet = SPREADSHEET
         self.html = self.get_webpage()
         self.grab_dates()
         self.sheet_num = None
