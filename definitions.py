@@ -129,7 +129,7 @@ class ARSSantander(Price):
                                 self.compra = float("%.2f" % float(x.text.lstrip().rstrip().split(" ")[1].replace(",", ".")))
                             if index == 2:
                                 self.venta = float("%.2f" % float(x.text.lstrip().rstrip().split(" ")[1].replace(",", ".")))
-                                self.tarjeta = float("%.2f" % float(self.venta * 1.65))
+                                self.tarjeta = float("%.2f" % float(self.venta * 1.55))
                             if self.compra is not None:
                                 print("Got values from webpage..")
             else:
@@ -162,7 +162,7 @@ class ARSBNA(Price):
                         self.compra = float("%.2f" % float(number))
                     if index == 2:
                         self.venta = float("%.2f" % float(number))
-                        self.tarjeta = float("%.2f" % float(self.venta * 1.65))
+                        self.tarjeta = float("%.2f" % float(self.venta * 1.55))
             print("Got values from webpage..")
         else:
             print("Webapge is not valid, try another URL.")
@@ -194,7 +194,7 @@ class ARSBBVA(Price):
                     self.compra = float("%.2f" % float(number))
                 if index == 1:
                     self.venta = float("%.2f" % float(number))
-                    self.tarjeta = float("%.2f" % float(self.venta * 1.65))
+                    self.tarjeta = float("%.2f" % float(self.venta * 1.55))
             print("Got values from webpage..")
         else:
             print("Webapge is not valid, try another URL.")
