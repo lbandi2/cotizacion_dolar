@@ -11,6 +11,9 @@ class Price:
         self.url = url
         self.currency = None
         self.name = None
+        self.compra = None
+        self.venta = None
+        self.tarjeta = None
         self.html = self.get_webpage(utf8)
         self.grab_dates()
 
@@ -44,14 +47,14 @@ class Price:
         return False
 
     def insert_to_db(self):
+        new_record = {}
+        new_record["datetime"] = self.datetime
+        new_record["currency"] = self.currency
+        new_record["name"] = self.name
+        new_record["buy"] = self.compra
+        new_record["sell"] = self.venta
+        new_record["other"] = self.tarjeta
         if self.validate_results():
-            new_record = {}
-            new_record["datetime"] = self.datetime
-            new_record["currency"] = self.currency
-            new_record["name"] = self.name
-            new_record["buy"] = self.compra
-            new_record["sell"] = self.venta
-            new_record["other"] = self.tarjeta
             if self.validate_results():
                 add_records(new_record)
                 print("Values written successfully.\n")
@@ -117,8 +120,8 @@ class ARSSantander(Price):
                             if index == 2:
                                 self.venta = float("%.2f" % float(x.text.lstrip().rstrip().split(" ")[1].replace(",", ".")))
                                 self.tarjeta = float("%.2f" % float(self.venta * 1.75))
-                            if self.compra is not None:
-                                print("Got values from webpage..")
+                if self.compra is not None:
+                    print("Got values from webpage..")
             else:
                 print("Webapge is not valid, try another URL.")
                 self.compra = self.venta = self.tarjeta = self.grab_date = None
