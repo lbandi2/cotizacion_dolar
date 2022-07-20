@@ -12,6 +12,8 @@ DB = os.getenv('DB')
 DB_TABLE = "cotizacion"
 MAX_AMOUNT = 50
 
+# TODO: Add check for db existence
+
 def fetch(query, phrase=''):
     try:
         with connect(
@@ -78,8 +80,8 @@ def is_in_records(dic, table):
     records = get_all_records(table)
     for record in records:
         if len(set(record) - set(dic.values())) == 2:
-            if date_to_string(record[1]) == dic["datetime"]:
-                return True
+            # if date_to_string(record[1]) == dic["datetime"]: #TODO: Skip if last value is equal to current value
+            return True
     return False
 
 def add_records(dic, table=DB_TABLE, force=False):
