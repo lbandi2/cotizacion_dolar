@@ -11,6 +11,7 @@ class Price:
         self.url = url
         self.currency = None
         self.name = None
+        print(f"\nLoading values for {self.__class__.__name__}..")
         self.compra = None
         self.venta = None
         self.tarjeta = None
@@ -55,16 +56,13 @@ class Price:
         new_record["sell"] = self.venta
         new_record["other"] = self.tarjeta
         if self.validate_results():
-            if self.validate_results():
-                add_records(new_record)
-                print("Values written successfully.\n")
+            add_records(new_record)
         else:
             print(f"Sorry, can only write values that are valid.\nCurrent values: {new_record}")
 
 
 class COP(Price):
     def __init__(self, url):
-        print("Loading values for COP..")
         super().__init__(url)
         self.currency = "cop"
         self.name = "generic"
@@ -83,11 +81,11 @@ class COP(Price):
             for index, x in enumerate(filtered):
                 value = x.text.split("$ ")[1].replace(",", "")
                 if index == 0:
-                    self.tarjeta = value
+                    self.tarjeta = float("%.2f" % float(value))
                 if index == 1:
-                    self.compra = value
+                    self.compra = float("%.2f" % float(value))
                 if index == 2:
-                    self.venta = value
+                    self.venta = float("%.2f" % float(value))
             print("Got values from webpage..")
         else:
             print("Webapge is not valid, try another URL.")
@@ -95,7 +93,6 @@ class COP(Price):
 
 class ARSSantander(Price):
     def __init__(self, url):
-        print("Loading values for ARS Santander..")
         super().__init__(url, utf8=False)
         self.currency = "ars"
         self.name = "santander"
@@ -128,7 +125,6 @@ class ARSSantander(Price):
 
 class ARSBNA(Price):
     def __init__(self, url):
-        print("Loading values for ARS BNA..")
         super().__init__(url)
         self.currency = "ars"
         self.name = "bna"
@@ -161,7 +157,6 @@ class ARSBNA(Price):
 
 class ARSBBVA(Price):
     def __init__(self, url):
-        print("Loading values for ARS BBVA..")
         super().__init__(url)
         self.currency = "ars"
         self.name = "bbva"
@@ -194,7 +189,6 @@ class ARSBBVA(Price):
 
 class ARSDolarBlue(Price):
     def __init__(self, url):
-        print("Loading values for ARS Dolar Blue..")
         super().__init__(url)
         self.currency = "ars"
         self.name = "blue"
@@ -231,3 +225,6 @@ class ARSDolarBlue(Price):
 # a = ARSDolarBlue(URL_BLUE)
 # print(a.compra)
 # print(a.venta)
+# URL_COP = "https://www.dolarhoy.co"
+# a = COP(URL_COP)
+# print(a.compra)

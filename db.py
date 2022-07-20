@@ -79,8 +79,8 @@ def delete_all_records(table):
 def is_in_records(dic, table):
     records = get_all_records(table)
     for record in records:
-        if len(set(record) - set(dic.values())) == 2:
-            # if date_to_string(record[1]) == dic["datetime"]: #TODO: Skip if last value is equal to current value
+        if len(set(record) - set(dic.values())) == 2: # Skip if last value is equal to current value (except id and date)
+            # if date_to_string(record[1]) == dic["datetime"]: 
             return True
     return False
 
