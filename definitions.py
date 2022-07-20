@@ -2,17 +2,13 @@ from bs4 import BeautifulSoup
 import requests
 from db import add_records
 from datetime import datetime
-import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
-SPREADSHEET = os.getenv('SPREADSHEET')
-
 class Price:
     def __init__(self, url, utf8=True):
         self.url = url
-        self.service_file = 'service.json'
         self.currency = None
         self.name = None
         self.html = self.get_webpage(utf8)
@@ -60,7 +56,7 @@ class Price:
                 add_records(new_record)
                 print("Values written successfully.\n")
         else:
-            print("Sorry, can only write values that are valid.\n")
+            print(f"Sorry, can only write values that are valid.\nCurrent values: {new_record}")
 
 
 class COP(Price):
