@@ -12,7 +12,7 @@ DB = os.getenv('DB')
 DB_TABLE = "cotizacion"
 MAX_AMOUNT = 50
 
-# TODO: Add check for db existence
+# TODO: Add check for db and table existence
 
 def fetch(query, phrase=''):
     try:

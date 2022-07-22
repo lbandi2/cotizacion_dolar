@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
+import re
 from db import add_records
 from datetime import datetime
 from dotenv import load_dotenv
@@ -123,6 +124,41 @@ class ARSSantander(Price):
                 print("Webapge is not valid, try another URL.")
                 self.compra = self.venta = self.tarjeta = self.grab_date = None
 
+class ARSPatagonia(Price):
+    def __init__(self, url):
+        super().__init__(url, utf8=False)
+        self.currency = "ars"
+        self.name = "patagonia"
+        self.validation_string = "tr", {"class": "odd"}
+        self.main()
+
+    def main(self):
+        self.parse_webpage()
+        self.insert_to_db()
+
+    def parse_webpage(self):
+        html = BeautifulSoup(self.html, "html.parser")
+        filtered = html.find_all("tr", {"class": "odd"})
+        self.compra = None
+        self.venta = None
+        if self.webpage_is_valid(self.validation_string):
+            if filtered:
+                for index, x in enumerate(filtered):
+                    match = re.search("\d{3,5}(,|.)\d{1,2}", x.text).group()
+                    value = match.replace(",", ".")
+                    if value != '$ null':
+                        if self.compra is None:
+                            self.compra = float("%.2f" % float(value))
+                        if self.venta is None:
+                            self.venta = float("%.2f" % float(value))
+                            self.tarjeta = float("%.2f" % float(self.venta * 1.75))
+                if self.compra is not None:
+                    print("Got values from webpage..")
+            else:
+                print("Webapge is not valid, try another URL.")
+                self.compra = self.venta = self.tarjeta = self.grab_date = None
+
+
 class ARSBNA(Price):
     def __init__(self, url):
         super().__init__(url)
@@ -228,3 +264,8 @@ class ARSDolarBlue(Price):
 # URL_COP = "https://www.dolarhoy.co"
 # a = COP(URL_COP)
 # print(a.compra)
+
+# URL_PATAGONIA = "https://ebankpersonas.bancopatagonia.com.ar/eBanking/usuarios/cotizacionMonedaExtranjera.htm"
+# a = ARSPatagonia(URL_PATAGONIA)
+# a.compra
+# a.venta
