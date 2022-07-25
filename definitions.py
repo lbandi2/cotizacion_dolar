@@ -185,7 +185,7 @@ class ARSBNA(Price):
                         self.compra = float("%.2f" % float(number))
                     if index == 2:
                         self.venta = float("%.2f" % float(number))
-                        self.tarjeta = float("%.2f" % float(self.venta * 1.75))
+                        self.tarjeta = float("%.2f" % float(self.venta * 1.65))
             print("Got values from webpage..")
         else:
             print("Webapge is not valid, try another URL.")
