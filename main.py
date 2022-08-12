@@ -7,9 +7,11 @@ URL_PATAGONIA = "https://ebankpersonas.bancopatagonia.com.ar/eBanking/usuarios/c
 URL_BLUE = "https://dolarhoy.com"
 URL_COP = "https://www.dolarhoy.co"
 
-ARSBNA(URL_BNA)
-ARSBBVA(URL_BBVA)
-ARSSantander(URL_SANTANDER)
-ARSPatagonia(URL_PATAGONIA)
+TARJETA_COMISSION = 1.65
+
+ARSBNA(URL_BNA, TARJETA_COMISSION)
+ARSBBVA(URL_BBVA, TARJETA_COMISSION)
+ARSSantander(URL_SANTANDER, TARJETA_COMISSION)
+ARSPatagonia(URL_PATAGONIA, TARJETA_COMISSION)
 ARSDolarBlue(URL_BLUE)
 COP(URL_COP)

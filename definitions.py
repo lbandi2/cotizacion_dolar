@@ -8,10 +8,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Price:
-    def __init__(self, url, utf8=True):
+    def __init__(self, url, tarjeta_comission=0, utf8=True):
         self.url = url
         self.currency = None
         self.name = None
+        self.tarjeta_comission = tarjeta_comission
         print(f"\nLoading values for {self.__class__.__name__}..")
         self.compra = None
         self.venta = None
@@ -93,8 +94,8 @@ class COP(Price):
             self.compra = self.venta = self.tarjeta = self.grab_date = None
 
 class ARSSantander(Price):
-    def __init__(self, url):
-        super().__init__(url, utf8=False)
+    def __init__(self, url, tarjeta_comission):
+        super().__init__(url, tarjeta_comission, utf8=False)
         self.currency = "ars"
         self.name = "santander"
         self.validation_string = "td"
@@ -117,7 +118,7 @@ class ARSSantander(Price):
                                 self.compra = float("%.2f" % float(x.text.lstrip().rstrip().split(" ")[1].replace(",", ".")))
                             if index == 2:
                                 self.venta = float("%.2f" % float(x.text.lstrip().rstrip().split(" ")[1].replace(",", ".")))
-                                self.tarjeta = float("%.2f" % float(self.venta * 1.75))
+                                self.tarjeta = float("%.2f" % float(self.venta * self.tarjeta_comission))
                 if self.compra is not None:
                     print("Got values from webpage..")
             else:
@@ -125,8 +126,8 @@ class ARSSantander(Price):
                 self.compra = self.venta = self.tarjeta = self.grab_date = None
 
 class ARSPatagonia(Price):
-    def __init__(self, url):
-        super().__init__(url, utf8=False)
+    def __init__(self, url, tarjeta_comission):
+        super().__init__(url, tarjeta_comission, utf8=False)
         self.currency = "ars"
         self.name = "patagonia"
         self.validation_string = "tr", {"class": "odd"}
@@ -151,7 +152,7 @@ class ARSPatagonia(Price):
                             self.compra = float("%.2f" % float(value))
                         if self.venta is None:
                             self.venta = float("%.2f" % float(value))
-                            self.tarjeta = float("%.2f" % float(self.venta * 1.75))
+                            self.tarjeta = float("%.2f" % float(self.venta * self.tarjeta_comission))
                 if self.compra is not None:
                     print("Got values from webpage..")
             else:
@@ -160,8 +161,8 @@ class ARSPatagonia(Price):
 
 
 class ARSBNA(Price):
-    def __init__(self, url):
-        super().__init__(url)
+    def __init__(self, url, tarjeta_comission):
+        super().__init__(url, tarjeta_comission)
         self.currency = "ars"
         self.name = "bna"
         self.validation_string = "td"
@@ -185,15 +186,15 @@ class ARSBNA(Price):
                         self.compra = float("%.2f" % float(number))
                     if index == 2:
                         self.venta = float("%.2f" % float(number))
-                        self.tarjeta = float("%.2f" % float(self.venta * 1.65))
+                        self.tarjeta = float("%.2f" % float(self.venta * self.tarjeta_comission))
             print("Got values from webpage..")
         else:
             print("Webapge is not valid, try another URL.")
             self.compra = self.venta = self.tarjeta = self.grab_date = None
 
 class ARSBBVA(Price):
-    def __init__(self, url):
-        super().__init__(url)
+    def __init__(self, url, tarjeta_comission):
+        super().__init__(url, tarjeta_comission)
         self.currency = "ars"
         self.name = "bbva"
         self.validation_string = "td", {"class": "number"}
@@ -217,7 +218,7 @@ class ARSBBVA(Price):
                     self.compra = float("%.2f" % float(number))
                 if index == 1:
                     self.venta = float("%.2f" % float(number))
-                    self.tarjeta = float("%.2f" % float(self.venta * 1.75))
+                    self.tarjeta = float("%.2f" % float(self.venta * self.tarjeta_comission))
             print("Got values from webpage..")
         else:
             print("Webapge is not valid, try another URL.")

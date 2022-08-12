@@ -9,7 +9,7 @@ DB_HOST = os.getenv('DB_HOST')
 DB_USER = os.getenv('DB_USER')
 DB_PASSWORD = os.getenv('DB_PASSWORD')
 DB = os.getenv('DB')
-DB_TABLE = "cotizacion"
+DB_TABLE = "dolar_cotizacion"
 MAX_AMOUNT = 50
 
 # TODO: Add check for db and table existence
