@@ -1,7 +1,8 @@
 from bs4 import BeautifulSoup
 import requests
 import re
-from db import add_records
+# from db import add_records
+from db import DB
 from datetime import datetime
 from dotenv import load_dotenv
 
@@ -24,7 +25,8 @@ class Price:
         self.fulldate = datetime.now().strftime("%d/%m/%Y (%H:%M:%S)")
         self.date = datetime.now().strftime("%d/%m/%Y")
         self.timestamp = datetime.now().time()
-        self.datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        # self.datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.datetime = datetime.now()
 
     def webpage_is_valid(self, validation_string):
         html = BeautifulSoup(self.html, "html.parser")
@@ -58,7 +60,8 @@ class Price:
         new_record["sell"] = self.venta
         new_record["other"] = self.tarjeta
         if self.validate_results():
-            add_records(new_record)
+            db = DB(self.currency, self.name)
+            db.add_records(new_record)
         else:
             print(f"Sorry, can only write values that are valid.\nCurrent values: {new_record}")
 
@@ -258,15 +261,17 @@ class ARSDolarBlue(Price):
             print("Webapge is not valid, try another URL.")
             self.compra = self.venta = self.tarjeta = self.grab_date = None
 
-# URL_BLUE = "https://dolarhoy.com"
-# a = ARSDolarBlue(URL_BLUE)
-# print(a.compra)
-# print(a.venta)
-# URL_COP = "https://www.dolarhoy.co"
-# a = COP(URL_COP)
-# print(a.compra)
 
-# URL_PATAGONIA = "https://ebankpersonas.bancopatagonia.com.ar/eBanking/usuarios/cotizacionMonedaExtranjera.htm"
-# a = ARSPatagonia(URL_PATAGONIA)
-# a.compra
-# a.venta
+if __name__ == '__main__':
+    URL_BLUE = "https://dolarhoy.com"
+    a = ARSDolarBlue(URL_BLUE)
+    print(a.compra)
+    print(a.venta)
+    # URL_COP = "https://www.dolarhoy.co"
+    # a = COP(URL_COP)
+    # print(a.compra)
+
+    # URL_PATAGONIA = "https://ebankpersonas.bancopatagonia.com.ar/eBanking/usuarios/cotizacionMonedaExtranjera.htm"
+    # a = ARSPatagonia(URL_PATAGONIA)
+    # a.compra
+    # a.venta
